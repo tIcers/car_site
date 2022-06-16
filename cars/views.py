@@ -19,4 +19,15 @@ def add(request):
 		return render(request,'cars/add.html')
 
 def delete(request):
-	return render(request,'cars/delete.html')
+	if request.POST:
+		#delete car
+		pk = request.POST['pk']
+		try:
+			models.Car.objects.get(pk=pk).delete()
+			return redirect(reverse('cars:list'))
+
+		except:
+			print('pk not found')
+			return redirect(reverse('cars:list'))
+	else:
+		return render(request,'cars/delete.html')
